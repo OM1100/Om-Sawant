@@ -1,0 +1,64 @@
+Linux is a multi-user system, which means that more than one person can interact with the same system at the same time. 
+As a system administrator, you have the responsibility to manage the system’s users and groups by creating and removing users and assign them to different groups.
+useradd:
+In Linux, a ‘useradd‘ command is a low-level utility that is used for adding/creating user accounts in Linux and other Unix-like operating systems. The ‘adduser‘ is much similar to useradd command, because it is just a symbolic link to it.
+When we run ‘useradd‘ command in Linux terminal, it performs following major things:
+•	It edits /etc/passwd, /etc/shadow, /etc/group and /etc/gshadow files for the newly created User account.
+•	Creates and populate a home directory for the new user.
+•	Sets permissions and ownerships to home directory.
+Basic syntax of command is:
+                  useradd [options] username
+Example: 
+ To Add a New User in Linux
+To add/create a new user, all you’ve to follow the command ‘useradd‘ or ‘adduser‘ with ‘username’. The ‘username’ is a user login name, that is used by user to login into the system.
+Only one user can be added and that username must be unique (different from other username already exists on the system).
+For example, to add a new user called ‘tecmint‘, use the following command.
+[root@tecmint ~]# useradd tecmint
+When we add a new user in Linux with ‘useradd‘ command it gets created in locked state and to unlock that user account, we need to set a password for that account with ‘passwd‘ command.
+[root@tecmint ~]# passwd tecmint
+Changing password for user tecmint.
+New UNIX password:
+Retype new UNIX password:
+passwd: all authentication tokens updated successfully.
+Once a new user created, it’s entry automatically added to the ‘/etc/passwd‘ file. The file is used to store users information and the entry should be.
+tecmint:x:504:504:tecmint:/home/tecmint:/bin/bash
+
+
+groupadd:
+In Linux, groups are used to organize and administer user accounts. The primary purpose of groups is to define a set of privileges such as reading, writing, or executing permission for a given resource that can be shared among the users within the group.
+The groupadd command creates a new group account using the values specified on the command line, plus the default values from the system. The new group is entered into the system files as needed.
+The general syntax for the groupadd command is as follows:
+groupadd [OPTIONS] GROUPNAME
+Only the root or a user with sudo privileges can create new groups.
+When invoked, groupadd creates a new group using the options specified on the command line plus the default values specified in the /etc/login.defs file.
+For example, to create a new group named mygroup.
+groupadd mygroup
+The command adds an entry for the new group to the /etc/group and /etc/gshadow files.
+Once the group is created, you can start adding users to the group .
+usermod:
+In Unix/Linux distributions, the command ‘usermod‘ is used to modify or change any attributes of a already created user account via command line. The command ‘usermod‘ is similar to that ‘useradd‘ or ‘adduser‘ but the login granted to an existing user.
+The command ‘useradd‘ or ‘adduser‘ is used for creating user accounts in Linux systems. To know more about on how to create system users, read our complete guide at:
+A Complete Guide to “useradd” Command in Linux
+After creating user accounts, in some scenarios where we need to change the attributes of an existing user such as, change user’s home directory, login name, login shell, password expiry date, etc, where in such case ‘usermod’ command is used.
+When we execute ‘usermod‘ command in terminal, the following files are used and affected.
+•	/etc/passwd – User account information.
+•	/etc/shadow – Secure account information.
+•	/etc/group – Group account information.
+•	/etc/gshadow – Secure group account information.
+•	/etc/login.defs – Shadow password suite configuration..
+Basic syntax of command is:
+usermod [options] username
+The ‘usermod‘ command is simple to use with lots of options to make changes to an existing user. To use usermod command by modifying some existing users in Linux box with the help of following options.
+•	-c = We can add comment field for the useraccount.
+•	-d = To modify the directory for any existing user account.
+•	-e = Using this option we can make the account expiry in specific period.
+•	-g = Change the primary group for a User.
+•	-G = To add a supplementary groups.
+•	-a = To add anyone of the group to a secondary group.
+•	-l = To change the login name from tecmint to tecmint_admin.
+•	-L = To lock the user account. This will lock the password so we can’t use the account.
+•	-m = moving the contents of the home directory from existing home dir to new dir.
+•	-p = To Use un-encrypted password for the new password. (NOT Secured).
+•	-s = Create a Specified shell for new accounts.
+•	-u = Used to Assigned UID for the user account between 0 to 999.
+•	-U = To unlock the user accounts. This will remove the password lock and allow us to use the user account.
