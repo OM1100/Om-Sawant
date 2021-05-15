@@ -1,0 +1,53 @@
+Linux Partitions & Storage
+
+Storage:
+ -Linux has robust systems and tooling to manage hardware devices, including storage drives. 
+ -In this article we’ll cover, at a high level, how Linux represents these devices and how raw storage is made into usable space on the server.
+ 
+Partition :
+Partitioning is the process of writing the hard drive sectors that will make up the partition table. It contains information on the partition, including sector size, position with respect to the primary partition, types of partitions present, operating systems installed, etc. When a partition is created, it is given a volume name, which allows it to be easily identified.
+
+Linux Partitions :
+		Large storage devices are divided into separate sections called partitions. Partitioning also allows you to divide your hard drive into isolated sections, 
+		where each section behaves as its own hard drive. Partitioning is particularly useful if you run multiple operating systems.
+		BIOS and UFI are tow types of chips for the motherboard.
+		MBR (Master Boot Record) method is used for BIOS and GPT (GUID Partition Table) method is used for UFI. 
+
+Two types of partitions :
+		1) Primary Partition : this partition contains the booting files.
+		2) Extended Partition : this partition contains the storage files for other data to store.
+
+ MBR:
+ MBR is the traditional partitioning system, which has been in use for over 30 years.
+ Because of its age, it has some serious limitations. 
+ Because of this, the fourth partition is typically set up as an “extended partition”, in which “logical partitions” can be created. 
+ This allows you to subdivide the last partition to effectively allow additional partitions.
+  
+
+GPT:
+ GPT is a more modern partitioning scheme that attempts to resolve some of the issues inherent with MBR.
+ Systems running GPT can have many more partitions per disk. This is usually only limited by the restrictions imposed by the operating system itself.  
+ GPT can also write a “protective MBR” which tells MBR-only tools that the disk is being used.
+ In most cases, GPT is the better choice unless your operating system or tooling prevent you from using it.
+To create a new partition on a Linux Server:
+1.	Verify the partitions available on the server: fdisk -l
+2.	Choose which device you wish to use (such as /dev/sda or /dev/sdb)
+3.	Run fdisk /dev/sdX (where X is the device you would like to add the partition to)
+4.	Type ‘n’ to create a new partition.
+5.	Specify where you would like the partition to end and start.  You can set the number of MB of the partition instead of the end cylinder.  For example:  +1000M
+6.	Type ‘p’ to view the partition, and type ‘w’ to save the partition
+7.	Run the command ‘partprobe’ to have the OS detect the new partition table.  If it still does not detect the partition table, you might need a reboot.
+8.	Format the partition by doing:  ‘mke2fs -j /dev/sdaX’ – where X is the number of the partition you have created.
+9.	Create a directory where you wish to mount the new drive, for example: /newpartition.  ‘mkdir -p /newpartition’
+10.	To mount, you can use the following command: ‘mount /dev/sdaX /newpartition’
+11.	If you would like the drive to be mounted automatically each time you boot, add the following to /etc/fstab: ‘/dev/sdaX /newpartition ext3 defaults 1 2’
+
+ Some commands as follow:
+  1. Lsblk --fs/dev/vdb  - list block with UUID
+  2. parted -l           - list partitions
+  3. parted/dev/vdb mklabel msdos - make label to a partion
+  4. mkpart              - create a patition 
+  5. udevadm settle      - wait till partition is registered successfully
+  6. mkfs.xfs/dev/vdb1   - format file system with XFS file system
+  7. systemctl daemon-reload - restart daemon service
+
